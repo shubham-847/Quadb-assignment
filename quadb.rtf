@@ -1,0 +1,346 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\b\f0\fs22\lang9 1. Implement a function that checks whether a given string is a palindrome or not.\b0\par
+Ans->  use std::io;\par
+fn main() \{\par
+    println!("Enter a string: ");\par
+    let mut input = String::new();\par
+    io::stdin().read_line(&mut input).unwrap_or_else(|_| \{\par
+        panic!("Failed to read line");\par
+    \}\par
+);\par
+\par
+    let input = input.trim();\par
+\par
+    if is_palindrome(input) \{\par
+        println!("'\{\}' is a palindrome", input);\par
+    \} else \{\par
+        println!("'\{\}' is not a palindrome", input);\par
+    \}\par
+\}\par
+\par
+fn is_palindrome(input: &str) -> bool \{\par
+    input.chars().eq(input.chars().rev())\par
+\}\par
+\b 2. Given a sorted array of integers, implement a function that returns the index of the first occurrence of a given number.\par
+\b0 Ans-> fn first_occurrence_index(arr: &[i32], target: i32) -> Option<usize> \{\par
+    let mut low = 0;\par
+    let mut high = arr.len() - 1;\par
+    let mut result = None;\par
+\par
+    while low <= high \{\par
+        let mid = low + (high - low) / 2;\par
+        if arr[mid] == target \{\par
+            result = Some(mid);\par
+            high = mid - 1; \par
+        \} else if arr[mid] < target \{\par
+            low = mid + 1;\par
+        \} else \{\par
+            high = mid - 1;\par
+        \}\par
+    \}\par
+\par
+    result\par
+\}\par
+\par
+fn main() \{\par
+    let arr = [1, 2, 3, 3, 3, 4, 5, 6];\par
+    let target = 3;\par
+    match first_occurrence_index(&arr, target) \{\par
+        Some(index) => println!("First occurrence of \{\} is at index \{\}", target, index),\par
+        None => println!("\{\} not found in the array", target),\par
+    \}\par
+\}\par
+\b 3. Given a string of words, implement a function that returns the shortest word in the string.\par
+\b0 Ans->fn shortest_word(input: &str) -> Option<&str> \{\par
+    input.split_whitespace().min_by_key(|word| word.len())\par
+\}\par
+\par
+fn main() \par
+    let input = "The quick brown fox jumps over the lazy dog";\par
+    if let Some(shortest) = shortest_word(input) \{\par
+        println!("The shortest word is: \{\}", shortest);\par
+    \} else \{\par
+        println!("No words found in the input.");\par
+    \}\par
+\}\par
+\b 4. Implement a function that checks whether a given number is prime or not.\par
+\b0 Ans->use std::io;\par
+fn is_prime(num: u64) -> bool \{\par
+    if num <= 1 \{\par
+    \}\par
+    for i in 2..=(num as f64).sqrt() as u64 \{\par
+        if num % i == 0 \{\par
+            return false; \par
+        \}\par
+    \}\par
+    true \par
+\}\par
+\par
+fn main() \{\par
+    println!("Welcome to the Prime Number Checker!");\par
+\par
+    loop \{\par
+        println!("Please enter a positive integer (or enter 'q' to quit):");\par
+\par
+        let mut input = String::new();\par
+        io::stdin().read_line(&mut input).expect("Failed to read line");\par
+\par
+        if input.trim().eq_ignore_ascii_case("q") \{\par
+            println!("Goodbye!");\par
+            break;\par
+        \}\par
+        let num: u64 = match input.trim().parse() \{\par
+            Ok(num) => num,\par
+            Err(_) => \{\par
+                println!("Invalid input. Please enter a valid positive integer.");\par
+                continue;\par
+            \}\par
+        \};\par
+\par
+        if is_prime(num) \{\par
+            println!("\{\} is prime", num);\par
+        \} else \{\par
+            println!("\{\} is not prime", num);\par
+        \}\par
+    \}\par
+\}\par
+\b 5. Given a sorted array of integers, implement a function that returns the median of the array.\par
+\b0 Ans-> use std::io;\par
+\par
+fn median(numbers: &[i32]) -> Option<f64> \{\par
+    let len = numbers.len();\par
+    if len == 0 \{\par
+        return None;\par
+    \}\par
+    let mid = len / 2;\par
+    if len % 2 == 0 \{\par
+        let left = numbers[mid - 1];\par
+        let right = numbers[mid];\par
+        Some(f64::from(left + right) / 2.0)\par
+    \} else \{\par
+    Some(f64::from(numbers[mid]))\par
+    \}\par
+\}\par
+fn main() \{\par
+    println!("Welcome to the Median Calculator!");\par
+    loop \{\par
+        println!("Please enter a list of integers separated by spaces (or enter 'q' to quit):");\par
+\par
+        let mut input = String::new();\par
+        io::stdin().read_line(&mut input).expect("Failed to read line");\par
+\par
+        if input.trim().eq_ignore_ascii_case("q") \{\par
+            println!("Goodbye!");\par
+            break;\par
+        \}\par
+        let numbers: Vec<i32> = input\par
+            .split_whitespace()\par
+            .filter_map(|s| s.parse().ok())\par
+            .collect();\par
+        match median(&numbers) \{\par
+            Some(result) => println!("Median: \{\}", result),\par
+            None => println!("Please enter at least one integer."),\par
+        \}\par
+    \}\par
+\}\par
+\b 6. Implement a function that finds the longest common prefix of a given set of strings.\par
+\b0 Ans->fn longest_common_prefix<'a>(words: &'a [&'a str]) -> &'a str \{\par
+    if words.is_empty() \{\par
+        return "";\par
+    \}\par
+    let mut prefix = words[0];\par
+    for &word in &words[1..] \{\par
+        prefix = common_prefix(prefix, word);\par
+    \}\par
+    prefix\par
+\}\par
+fn common_prefix<'a>(a: &'a str, b: &'a str) -> &'a str \{\par
+    let len = a.len().min(b.len());\par
+    let common_len = a.chars().zip(b.chars()).take_while(|(ca, cb)| ca == cb).count();\par
+    &a[..common_len]\par
+\}\par
+fn main() \{\par
+    let words = vec![\par
+        "techie delight",\par
+        "tech",\par
+        "techie",\par
+        "technology",\par
+        "technical",\par
+    ];\par
+\par
+    let result = longest_common_prefix(&words);\par
+    println!("The longest common prefix is: \{\}", result);\par
+\}\par
+\b 7. Implement a function that returns the kth smallest element in a given array.\par
+\b0 Ans->fn kth_smallest(arr: &Vec<i32>, k: usize) -> i32 \{\par
+    let mut low = *arr.iter().min().unwrap();\par
+    let mut high = *arr.iter().max().unwrap();\par
+    while low < high \{\par
+        let mid = low + (high - low) / 2;\par
+        let count = arr.iter().filter(|&&x| x <= mid).count();\par
+        if count < k \{\par
+            low = mid + 1;\par
+        \} else \{\par
+            high = mid;\par
+        \}\par
+    \}\par
+    low\par
+\}\par
+fn main() \{\par
+    let nums = vec![1, 4, 5, 3, 19, 3];\par
+    let k = 3;\par
+    let result = kth_smallest(&nums, k);\par
+    println!("K'th smallest element is \{\}", result);\par
+\}\par
+\b 8. Given a binary tree, implement a function that returns the maximum depth of the tree.\par
+\b0 Ans-> use std::\{io, rc::Rc, cell::RefCell\};\par
+#[derive(Debug, PartialEq, Eq)]\par
+struct TreeNode \{\par
+    val: i32,\par
+    left: Option<Rc<RefCell<TreeNode>>>,\par
+    right: Option<Rc<RefCell<TreeNode>>>,\par
+\}\par
+impl TreeNode \{\par
+    fn new(val: i32) -> Self \{\par
+        TreeNode \{ val, left: None, right: None \}\par
+    \}\par
+\}\par
+fn input_integer() -> i32 \{\par
+    loop \{\par
+        let mut input = String::new();\par
+        io::stdin().read_line(&mut input).expect("Failed to read line");\par
+        if let Ok(num) = input.trim().parse() \{\par
+            return num;\par
+        \} else \{\par
+            println!("Invalid input. Please enter an integer:");\par
+        \}\par
+    \}\par
+\}\par
+fn build_tree() -> Option<Rc<RefCell<TreeNode>>> \{\par
+    println!("Enter the value for the current node (or -1 to skip):");\par
+    let val = input_integer();\par
+    if val == -1 \{\par
+        return None;\par
+    \}\par
+    let node = Rc::new(RefCell::new(TreeNode::new(val)));\par
+    println!("Enter the left child of \{\}: ", val);\par
+    node.borrow_mut().left = build_tree();\par
+    println!("Enter the right child of \{\}: ", val);\par
+    node.borrow_mut().right = build_tree();\par
+    Some(node)\par
+\}\par
+fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 \{\par
+    match root \{\par
+        Some(node) => \{\par
+            let node = node.borrow();\par
+            1 + std::cmp::max(max_depth(node.left.clone()), max_depth(node.right.clone()))\par
+        \}\par
+        None => 0,\par
+    \}\par
+\}\par
+fn main() \{\par
+    println!("Please create the binary tree:");\par
+    let root = build_tree();\par
+    let depth = max_depth(root);\par
+    println!("Maximum depth of the binary tree: \{\}", depth);\par
+\}\par
+\b 9. Reverse a string in Rust\par
+\b0 Ans->fn reverse_alternate(initial: &str) -> String \{\par
+    let chars: Vec<char> = initial.chars().collect();\par
+    let mut reversed = String::new();\par
+    let mut index = initial.len() - 1;\par
+    loop \{\par
+        reversed.push(chars[index]);\par
+        if index == 0 \{\par
+            break;\par
+        \}\par
+        index -= 1;\par
+    \}\par
+    reversed\par
+\}\par
+fn main() \{\par
+    let reversed = reverse_alternate("SHUBHAM");\par
+    println!("\{reversed\}");\par
+\}\par
+\b 10. Check if a number is prime in Rust\par
+\b0 Ans->use std::io;\par
+\par
+fn main() \{\par
+    let mut input = String::new();\par
+    println!("Enter a number: ");\par
+    io::stdin().read_line(&mut input).expect("Failed to read line");\par
+\par
+    let number: u32 = match input.trim().parse() \{\par
+        Ok(num) => num,\par
+        Err(_) => \{\par
+            println!("Invalid input. Please enter a valid number.");\par
+            return;\par
+        \}\par
+    \};\par
+\par
+    if is_prime(number) \{\par
+        println!("\{\} is a prime number", number);\par
+    \} else \{\par
+        println!("\{\} is not a prime number", number);\par
+    \}\par
+\}\par
+\par
+fn is_prime(n: u32) -> bool \{\par
+    if n <= 1 \{\par
+        return false;\par
+    \}\par
+\par
+    for i in 2..=n / 2 \{\par
+        if n % i == 0 \{\par
+            return false;\par
+        \}\par
+    \}\par
+\par
+    true\par
+\}\par
+\b 11. Merge two sorted arrays in Rust\par
+\b0 Ans->fn main() \{\par
+    let mut nums1 = vec![1, 2, 3, 0, 0, 0];\par
+    let m = 3;\par
+    let nums2 = vec![2, 5, 6];\par
+    let n = 3;\par
+    let mut i1 = m;\par
+    let mut i2 = n;\par
+    let mut insert_pos = m + n - 1;\par
+    while i1 > 0 && i2 > 0 \{\par
+        if nums1[i1 - 1] > nums2[i2 - 1] \{\par
+            nums1[insert_pos] = nums1[i1 - 1];\par
+            i1 -= 1;\par
+        \} else \{\par
+            nums1[insert_pos] = nums2[i2 - 1];\par
+            i2 -= 1;\par
+        \}\par
+        insert_pos -= 1;\par
+    \}\par
+    while i2 > 0 \{\par
+        nums1[insert_pos] = nums2[i2 - 1];\par
+        i2 -= 1;\par
+        insert_pos -= 1;\par
+    \}\par
+    println!("Merged array: \{:?\}", nums1);\par
+\}\par
+\b 12. Find the maximum subarray sum in Rust\b0\par
+Ans->fn find_max_subarray_sum(arr: &[i32]) -> i32 \{\par
+    let mut max_sum = arr[0];\par
+    let mut current_sum = arr[0];\par
+\par
+    for &num in arr.iter().skip(1) \{\par
+        current_sum = current_sum.max(0) + num;\par
+        max_sum = max_sum.max(current_sum);\par
+    \}\par
+    max_sum\par
+\}\par
+fn main() \{\par
+    let array = vec![-2, 1, -3, 4, -1, 2, 1, -5, 4];\par
+    let max_subarray_sum = find_max_subarray_sum(&array);\par
+    println!("The maximum subarray sum is: \{\}", max_subarray_sum);\par
+\}\b\par
+\b0\par
+}
+ 
